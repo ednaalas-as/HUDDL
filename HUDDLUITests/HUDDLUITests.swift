@@ -372,6 +372,336 @@ final class HUDDLUITests: XCTestCase {
         waitFor(text("Profile updated"), 20)
     }
 
+    // MARK: Helpers for the final-coverage tests
+
+    /// Any element whose placeholder matches (multi-line TextFields don't expose a stable type).
+    func placeholder(_ p: String) -> XCUIElement {
+        app.descendants(matching: .any).matching(NSPredicate(format: "placeholderValue == %@", p)).firstMatch
+    }
+
+    /// Scrolls the current screen until the element is hittable.
+    func scrollTo(_ e: XCUIElement, maxSwipes: Int = 10) {
+        var n = 0
+        while !(e.exists && e.isHittable) && n < maxSwipes { app.swipeUp(); n += 1 }
+        XCTAssertTrue(e.exists && e.isHittable, "Could not scroll to \(e)")
+    }
+
+    /// Picks the first photo in the system photo picker (the simulator library has the seed photo added).
+    func pickFirstPhotoInSystemPicker() {
+        let cell = app.images.matching(NSPredicate(format: "label BEGINSWITH 'Photo'")).firstMatch
+        if !cell.waitForExistence(timeout: 15) {
+            let dump = XCTAttachment(string: app.debugDescription); dump.name = "picker-tree"; dump.lifetime = .keepAlways; add(dump)
+        }
+        waitFor(cell).tap()
+        let add = app.buttons["Add"].firstMatch
+        if add.waitForExistence(timeout: 5) { add.tap() }
+    }
+
+    func backUntil(_ e: XCUIElement, maxTaps: Int = 5) {
+        var n = 0
+        while !e.waitForExistence(timeout: 2) && n < maxTaps { app.buttons["Back"].firstMatch.tap(); n += 1 }
+        waitFor(e)
+    }
+
+    // MARK: 14. Post menu (hide + undo, report), share sheet, full-screen photo viewer
+
+    func test14_PostMenuShareAndPhotoViewer() {
+        signInToHome("ednaalas-as")
+        waitFor(textContaining("Great Match!"), 30)
+        // Photo viewer: Bea's moments post carries the seeded photo.
+        let photo = app.buttons["Photo"].firstMatch
+        scrollTo(photo)
+        photo.tap()
+        waitFor(button("Close"), 10)
+        sleep(2) // let the image load before the screenshot
+        snap("photo-viewer")
+        button("Close").tap()
+        // Report a post.
+        app.swipeDown(); app.swipeDown()
+        waitFor(button("More options")).tap()
+        waitFor(button("Report post")).tap()
+        waitFor(text("Why are you reporting this?"))
+        snap("report-post")
+        button("Spam or misleading").tap()
+        waitFor(text("Thanks for letting us know"), 20)
+        button("DONE").tap()
+        // Hide someone else's post, then undo.
+        var hid = false
+        let menus = app.buttons.matching(NSPredicate(format: "label == %@", "More options"))
+        for i in 0..<min(menus.count, 6) {
+            let m = menus.element(boundBy: i)
+            guard m.exists, m.isHittable else { continue }
+            m.tap()
+            if button("Hide post").waitForExistence(timeout: 3) { button("Hide post").tap(); hid = true; break }
+            button("Cancel").tap()
+        }
+        XCTAssertTrue(hid, "No post from another player had a Hide option")
+        waitFor(text("Post hidden"), 15)
+        snap("post-hidden")
+        button("Undo").tap()
+        // Share sheet.
+        waitFor(button("Share")).tap()
+        waitFor(button("Send in a HUDDL chat"))
+        snap("share-sheet")
+        button("Copy link").tap()
+        waitFor(text("Link copied"))
+        waitFor(button("Share")).tap()
+        waitFor(button("Send in a HUDDL chat")).tap()
+        waitFor(button("Direct"), 15)
+    }
+
+    // MARK: 15. Sort sheet on the Interested list
+
+    func test15_SortSheet() {
+        signInToHome("kyleabandia")
+        button("Huddle").tap()
+        waitFor(text("ROSTER"), 25)
+        id("seg.Interested").tap()
+        waitFor(buttonContaining("Sort by Soonest")).tap()
+        waitFor(text("Sort by"))
+        snap("sort-sheet")
+        waitFor(buttonContaining("Nearest")).tap()
+        waitFor(button("Sort by Nearest"), 10)
+        buttonContaining("Sort by Nearest").tap()
+        waitFor(buttonContaining("Most spots left")).tap()
+        waitFor(button("Sort by Most spots left"), 10)
+    }
+
+    // MARK: 16. Host: invite + cancel invite, edit and save, cancel game
+
+    func test16_InviteEditAndCancelGame() {
+        signInToHome("ednaalas-as")
+        button("Host a game").tap()
+        waitFor(text("HOST A GAME"))
+        let title = app.textFields["e.g. Saturday 6v6 Open"]
+        waitFor(title).tap(); title.typeText("Invite Test Run")
+        dismissKeyboard()
+        app.staticTexts["Choose a court or gym"].firstMatch.tap()
+        waitFor(text("MSEUF Gymnasium")).tap()
+        button("POST GAME").tap()
+        waitFor(text("Your game is live!"), 25)
+        button("VIEW MY GAME").tap()
+        waitFor(text("MY GAME"), 20)
+        // Invite a player, then cancel the invite.
+        button("Manage game").tap()
+        waitFor(button("Invite players")).tap()
+        waitFor(text("INVITE PLAYER"))
+        let search = app.textFields["Search players by name or @username"]
+        waitFor(search).tap(); search.typeText("kyle")
+        waitFor(text("Kyle Allen Abandia"), 20)
+        waitFor(button("INVITE")).tap()
+        waitFor(button("SEND INVITE")).tap()
+        waitFor(text("Invite sent"), 20)
+        waitFor(button("INVITED"), 20)
+        snap("invite-sent")
+        button("INVITED").tap()
+        waitFor(text("Cancel invite?"))
+        id("dialog.confirm").tap()
+        waitFor(text("Invite cancelled"), 20)
+        waitFor(button("INVITE"), 20)
+        backUntil(text("MY GAME"))
+        // Edit and save.
+        button("Manage game").tap()
+        waitFor(button("Edit game")).tap()
+        waitFor(text("EDIT GAME"))
+        let field = app.textFields.firstMatch
+        waitFor(field).tap(); field.typeText(" Edited")
+        dismissKeyboard()
+        button("SAVE CHANGES").tap()
+        waitFor(textContaining("Saved"), 20)
+        waitFor(text("Invite Test Run Edited"), 20)
+        snap("game-edited")
+        // Cancel the game.
+        button("Manage game").tap()
+        waitFor(button("Cancel game")).tap()
+        waitFor(textContaining("Cancel Invite Test Run Edited?"))
+        id("dialog.confirm").tap()
+        waitFor(textContaining("Game cancelled"), 20)
+        waitFor(button("FIND SIMILAR"), 20)
+        snap("game-cancelled")
+    }
+
+    // MARK: 17. Post result with a photo upload → Result posted, then Share moments
+
+    func test17_PostResultAndShareMoments() {
+        signInToHome("ednaalas-as")
+        button("Profile").tap()
+        button("Hosted").tap()
+        waitFor(text("Sunset Scrimmage"), 25)
+        waitFor(button("POST RESULT")).tap()
+        waitFor(text("Who won?"), 20)
+        button("POST RESULT").tap()
+        waitFor(text("Enter a score for Set 1 or remove it"))
+        let a = app.textFields.matching(NSPredicate(format: "placeholderValue == 'A'"))
+        let b = app.textFields.matching(NSPredicate(format: "placeholderValue == 'B'"))
+        for (i, s) in [("25", "20"), ("25", "22")].enumerated() {
+            a.element(boundBy: i).tap(); a.element(boundBy: i).typeText(s.0)
+            b.element(boundBy: i).tap(); b.element(boundBy: i).typeText(s.1)
+        }
+        dismissKeyboard()
+        button("Add photos").tap()
+        waitFor(button("Choose photos & videos")).tap()
+        pickFirstPhotoInSystemPicker()
+        waitFor(app.buttons.matching(NSPredicate(format: "label CONTAINS 'Remove set'")).firstMatch) // still on the form
+        let caption = placeholder("How did it go?")
+        scrollTo(caption)
+        caption.tap(); caption.typeText("Close one at sunset!")
+        dismissKeyboard()
+        snap("post-result-form")
+        scrollTo(button("POST RESULT"))
+        button("POST RESULT").tap()
+        waitFor(id("dialog.title"))
+        XCTAssertTrue(id("dialog.title").label.contains("Post this result?"))
+        id("dialog.confirm").tap()
+        waitFor(text("Result posted!"), 60)
+        snap("result-posted")
+        button("VIEW ON HOME").tap()
+        waitFor(textContaining("Close one at sunset!"), 25)
+        snap("result-on-home")
+        // Share moments on the ended Morning Rally game.
+        button("Profile").tap()
+        button("Hosted").tap()
+        waitFor(text("Morning Rally 2v2"), 25).tap()
+        waitFor(button("SHARE MOMENTS"), 20).tap()
+        let c = placeholder("Write a caption…")
+        waitFor(c).tap(); c.typeText("Rematch soon!")
+        dismissKeyboard()
+        snap("share-moments")
+        button("POST").tap()
+        waitFor(text("Your post is live on the Home feed"), 40)
+        waitFor(textContaining("Rematch soon!"), 25)
+    }
+
+    // MARK: 18. Settings screens: sports & skill, help, contact support, terms, blocked list
+
+    func test18_SettingsSubscreens() {
+        signInToHome("ednaalas-as")
+        // Block a player first so the Blocked list has someone in it.
+        button("Search").tap()
+        let q = app.textFields["Search games, venues, players"]
+        waitFor(q).typeText("thessa")
+        waitFor(id("seg.Players")).tap()
+        waitFor(text("Thessalonica Surell"), 20).tap()
+        waitFor(button("More options")).tap()
+        waitFor(button("Block")).tap()
+        waitFor(button("BLOCK")).tap()
+        waitFor(button("UNBLOCK"), 20)
+        button("Profile").tap()
+        waitFor(button("Settings")).tap()
+        waitFor(text("SETTINGS"))
+        // Sports & skill.
+        button("Sports & skill level").tap()
+        waitFor(text("SPORTS & SKILL"))
+        let chess = app.switches["Chess"].firstMatch
+        waitFor(chess).tap()
+        snap("sports-skill")
+        scrollTo(button("SAVE"))
+        button("SAVE").tap()
+        waitFor(text("Saved"), 20)
+        waitFor(text("SETTINGS"))
+        // Blocked players list → unblock.
+        button("Blocked players").tap()
+        waitFor(text("Thessalonica Surell"), 20)
+        snap("blocked-list")
+        button("UNBLOCK").tap()
+        id("dialog.confirm").tap()
+        waitFor(textContaining("is unblocked"), 20)
+        waitFor(text("No blocked players"), 20)
+        backUntil(text("SETTINGS"))
+        // Help center → article → feedback.
+        button("Help center").tap()
+        waitFor(text("HELP CENTER"))
+        button("How does swiping work?").tap()
+        waitFor(textContaining("Discover shows one game at a time"))
+        snap("help-article")
+        button("YES").tap()
+        waitFor(text("Thanks for your feedback!"))
+        backUntil(text("HELP CENTER"))
+        // Contact support: validation, then send.
+        button("CONTACT SUPPORT").tap()
+        waitFor(button("SEND")).tap()
+        waitFor(text("Tell us a bit more (at least 10 characters)"))
+        buttonContaining("Choose a topic").tap()
+        waitFor(button("Games & hosting")).tap()
+        let msg = placeholder("Tell us what happened (at least 10 characters)")
+        waitFor(msg).tap(); msg.typeText("The sort sheet works well, thank you!")
+        dismissKeyboard()
+        snap("contact-support")
+        button("SEND").tap()
+        waitFor(text("Message sent"), 20)
+        button("DONE").tap()
+        backUntil(text("SETTINGS"))
+        // Terms & privacy.
+        app.swipeUp()
+        button("Terms & privacy").tap()
+        waitFor(textContaining("Terms of Use"))
+        snap("terms")
+        id("seg.Privacy").tap()
+        waitFor(textContaining("Privacy Policy"))
+        snap("privacy")
+    }
+
+    // MARK: 19. New account: change password, log out, sign back in, delete account
+
+    func test19_PasswordLogoutAndDeleteAccount() {
+        goToAuth()
+        let uname = "final\(Int.random(in: 1000...9999))"
+        type("username", uname)
+        type("email address", "\(uname)@huddl.test")
+        type("password", "Password123")
+        type("confirm password", "Password123")
+        dismissKeyboard()
+        button("SIGN UP").tap()
+        waitFor(text("Set up your profile"), 25)
+        button("Volleyball").tap()
+        button("CONTINUE").tap()
+        waitFor(textContaining("You’re all set"), 25)
+        button("GO TO HOME").tap()
+        waitFor(button("Home"), 20)
+        // Password & security.
+        button("Profile").tap()
+        waitFor(button("Settings")).tap()
+        button("Password & security").tap()
+        waitFor(text("PASSWORD"))
+        button("UPDATE PASSWORD").tap()
+        waitFor(text("Enter your current password"))
+        type("current password", "Password123")
+        type("new password", "NewPass1234")
+        type("confirm new password", "NewPass1234")
+        dismissKeyboard()
+        button("UPDATE PASSWORD").tap()
+        waitFor(text("Password updated"), 20)
+        // Log out, then sign in with the new password.
+        logOut()
+        type("username", uname)
+        type("password", "NewPass1234")
+        dismissKeyboard()
+        button("SIGN IN").tap()
+        waitFor(button("Home"), 25)
+        // Delete account.
+        button("Profile").tap()
+        waitFor(button("Settings")).tap()
+        let del = button("Delete account")
+        scrollTo(del)
+        del.tap()
+        waitFor(text("This permanently deletes your HUDDL account."))
+        let confirmField = placeholder("DELETE")
+        waitFor(confirmField).tap(); confirmField.typeText("DELETE")
+        dismissKeyboard()
+        snap("delete-account")
+        button("DELETE ACCOUNT").tap()
+        waitFor(id("dialog.title"))
+        id("dialog.confirm").tap()
+        let signUp = text("Sign Up"), signInButton = button("SIGN IN"), skip = button("SKIP")
+        let left = signUp.waitForExistence(timeout: 30) || signInButton.exists || skip.exists
+        XCTAssertTrue(left, "App did not return to the sign-in flow after deleting the account")
+        snap("account-deleted")
+        // The deleted account can no longer sign in.
+        app.terminate(); app.launch()
+        signIn(uname, pw: "NewPass1234")
+        waitFor(text("Wrong username or password"), 20)
+    }
+
     // MARK: 13. All eight accounts sign in independently
 
     func test13_AllEightAccountsSignIn() {

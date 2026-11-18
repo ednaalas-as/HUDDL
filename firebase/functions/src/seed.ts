@@ -11,6 +11,7 @@
 import { initializeApp } from "firebase-admin/app";
 import { getAuth } from "firebase-admin/auth";
 import { getFirestore, FieldValue, Timestamp } from "firebase-admin/firestore";
+import { getStorage } from "firebase-admin/storage";
 import { randomBytes } from "crypto";
 import { writeFileSync, existsSync, readFileSync } from "fs";
 import { join } from "path";
@@ -20,6 +21,7 @@ if (!production) {
   process.env.FIRESTORE_EMULATOR_HOST ??= "127.0.0.1:8080";
   process.env.FIREBASE_AUTH_EMULATOR_HOST ??= "127.0.0.1:9099";
   process.env.GCLOUD_PROJECT ??= "demo-huddl";
+  process.env.FIREBASE_STORAGE_EMULATOR_HOST ??= "127.0.0.1:9199";
 }
 initializeApp({ projectId: process.env.GCLOUD_PROJECT });
 const auth = getAuth();
@@ -142,6 +144,8 @@ async function main() {
     game("badminton-clinic", kyle, { title: "Badminton Smash Session", sport: "badminton", venue: "inigos", startH: 26, ppt: 1, playType: "solo", a: [kyle], b: [] }),
     // Ended game with a posted result (feeds Home, profiles and "Result & moments").
     game("morning-rally", edna, { title: "Morning Rally 2v2", sport: "volleyball", venue: "convention", startH: -26, ppt: 2, playType: "group", a: [edna, bea], b: [thessa, desiree], status: "ended" }),
+    // Ended game with NO result yet, so the host can test Post result → Result posted.
+    game("sunset-scrimmage", edna, { title: "Sunset Scrimmage", sport: "volleyball", venue: "dalahican", startH: -5, ppt: 2, playType: "solo", a: [edna, roselle], b: [jhon, kyle], status: "ended" }),
   ];
   // Remove games/posts/chats created by earlier test runs so every seed starts from the same state.
   const seedIds = new Set(games.map((g) => g.id));
@@ -204,11 +208,22 @@ async function main() {
     media: [], caption: "Great match, everyone! #HUDDL #Volleyball", tagged: [bea], actors: [], audience: "everyone", visibleTo: [],
     likeCount: 0, commentCount: 0, repostCount: 0, createdAt: hours(-23),
   });
+  // One photo on Bea's moments post so the full-screen photo viewer can be tested (emulator only).
+  let momentMedia: { url: string; type: string }[] = [];
+  if (!production) {
+    const bucketName = "demo-huddl.appspot.com";
+    const dest = `posts/${bea.id}/seed-moment-court.jpg`;
+    const token = randomBytes(16).toString("hex");
+    await getStorage().bucket(bucketName).upload(join(__dirname, "..", "seed-assets", "moment-court.jpg"), {
+      destination: dest, metadata: { contentType: "image/jpeg", metadata: { firebaseStorageDownloadTokens: token } },
+    });
+    momentMedia = [{ url: `http://127.0.0.1:9199/v0/b/${bucketName}/o/${encodeURIComponent(dest)}?alt=media&token=${token}`, type: "photo" }];
+  }
   await db.doc("posts/moments-morning-rally").set({
     author: bea, type: "postGame", gameId: "morning-rally", gameTitle: "Morning Rally 2v2", venueName: "Quezon Convention Gym",
     gameDate: hours(-26), gameSport: "volleyball", includeResult: true,
     result: { sport: "volleyball", gameTitle: "Morning Rally 2v2", winnerTeamId: "A", scoreLine: "25–21, 25–19", teamA, teamB },
-    media: [], caption: "Two straight sets with Edna 🏐 Thanks Thessa and Desiree for the battle!", tagged: [edna], actors: [],
+    media: momentMedia, caption: "Two straight sets with Edna 🏐 Thanks Thessa and Desiree for the battle!", tagged: [edna], actors: [],
     audience: "everyone", visibleTo: [], likeCount: 0, commentCount: 0, repostCount: 0, createdAt: hours(-20),
   });
   await db.doc(`posts/moments-morning-rally/likes/${thessa.id}`).set({ uid: thessa.id, createdAt: hours(-19) });

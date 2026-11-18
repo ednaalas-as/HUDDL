@@ -468,20 +468,62 @@ struct TermsView: View {
             }
         }
     }
-    // Placeholder legal copy — replace with HUDDL's reviewed Terms and Privacy Policy before release.
+    // HUDDL is a student project (CSSE105). These terms describe how the app actually works; they are not reviewed legal advice.
     static let termsText = """
-    HUDDL connects players so they can play sports together. By using HUDDL you agree to show up for games you join, respect fixed teams and the no-substitutes rule, and treat other players with respect.
+    Terms of Use · Last updated November 2026
 
-    Hosts are responsible for the accuracy of their game details. HUDDL does not operate venues and is not responsible for injuries or disputes at games.
+    1. About HUDDL
+    HUDDL helps people find others to play sports with: volleyball, badminton, basketball, football, lawn tennis, pickleball, chess and billiards. HUDDL is a student project built for CSSE105: Mobile Application Development at Manuel S. Enverga University Foundation. It is not a commercial service.
 
-    We may remove content or accounts that break these terms. (Draft — final terms pending.)
+    2. Your account
+    You need an account to use HUDDL. Keep your password private and use a username that does not impersonate anyone. You are responsible for what happens under your account. You must be at least 13 years old to create one.
+
+    3. Joining games
+    When you apply to or join a game, you agree to show up. Every HUDDL game has fixed teams and no substitutes, and rosters lock when the game starts. Leaving a game within 24 hours of its start lowers your reliability score.
+
+    4. Hosting games
+    Hosts must give accurate details: sport, venue, date, time and format. Hosts decide who joins their game and must treat every applicant fairly. If you cancel a game, every player and applicant is notified.
+
+    5. Posts, results and messages
+    Only post photos, videos and captions that you have the right to share. Results must reflect what actually happened; opponents can flag a result within 24 hours. Do not post or send spam, harassment, hateful content or anything illegal.
+
+    6. Safety
+    Meet in public venues and play within your ability. HUDDL does not run venues or supervise games, and is not responsible for injuries, lost items or disputes at games. You can block or report any player or post at any time.
+
+    7. Breaking these terms
+    Accounts and posts that break these terms may be removed.
+
+    8. Changes
+    These terms may change as the project develops. The date at the top shows the latest version.
     """
     static let privacyText = """
-    We store your profile (name, username, photo, sports, home area), the games you host and join, your posts, messages and notifications in Firebase.
+    Privacy Policy · Last updated November 2026
 
-    Your email is used only for sign-in and account recovery and is never shown to other players. Reports are anonymous and blocks are silent.
+    What we store
+    • Your profile: name, username, photo, sports and skill levels, and your home area.
+    • Your activity: games you host, apply to and join; swipes; posts, likes and comments; messages; notifications; reports and blocks.
+    • Your email address, used only to sign in and to recover your account.
 
-    You can delete your account at any time in Settings → Delete account, which deletes your profile, history and reviews. (Draft — final policy pending.)
+    Who can see it
+    • Other players see your name, username, photo, sports and the games you play.
+    • Your email address is never shown to other players.
+    • Direct messages are visible only to the two people in the conversation. Team chats are visible only to that game's players.
+    • Reports are anonymous, and the player you block is not notified.
+
+    Where it is stored
+    HUDDL uses Google Firebase (Authentication, Cloud Firestore, Cloud Storage and Cloud Functions). Access to your data is controlled by Firebase security rules.
+
+    Location
+    HUDDL uses the home area you choose to show games near you. It does not track your live location.
+
+    Your choices
+    • Edit your profile, sports and home area at any time in Settings.
+    • Turn notifications on or off for each type.
+    • Choose who can invite you to games.
+    • Delete your account in Settings → Delete account. This removes your profile, history and reviews, cancels games you host and removes you from games you joined.
+
+    Contact
+    Use Settings → Contact support to ask a question about your data.
     """
 }
 
