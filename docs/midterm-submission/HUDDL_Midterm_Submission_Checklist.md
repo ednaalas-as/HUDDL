@@ -4,8 +4,9 @@
 - [ ] **Read and personalize the reflection (section 6).** It's written from the verifiable project history. Change anything that doesn't sound like you. If you wrote or edited any code yourself, add one or two sentences naming those parts. Don't claim more than you did.
 - [ ] **Check your course's AI-use policy.** The reflection openly says an AI coding assistant wrote most of the code under your direction. If the policy asks for a specific disclosure format, follow it.
 - [x] **Cover page filled in:** Edna D. Alas-as · CSSE105: Mobile Application Development · Dean Rodrigo C. Belleza.
-- [ ] **Open both links from the PDF** to confirm they work for you:
-  - Figma: https://www.figma.com/design/kqWMa2AGXpp267HtbmbXY8/HUDDL. In Figma → Share, make sure your instructor can view it ("Anyone with the link can view", or invite them).
+- [ ] **Open the three links from the PDF** (cover and section 2) to confirm they work for you:
+  - FIGMA FILE: https://www.figma.com/design/kqWMa2AGXpp267HtbmbXY8/HUDDL. In Figma → Share, make sure your instructor can view it ("Anyone with the link can view", or invite them).
+  - FIGMA PREVIEW: https://www.figma.com/proto/kqWMa2AGXpp267HtbmbXY8/HUDDL?node-id=2-2 (plays the prototype from the Splash screen)
   - GitHub: https://github.com/ednaalas-as/HUDDL (public)
 
 ## Figma prototype: verified complete, nothing to do

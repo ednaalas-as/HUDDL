@@ -77,8 +77,10 @@ The host gets a notification, opens the Applicants screen and accepts or decline
 
 ## 2. Figma Prototype
 
-**HUDDL prototype (Figma):** [https://www.figma.com/design/kqWMa2AGXpp267HtbmbXY8/HUDDL](https://www.figma.com/design/kqWMa2AGXpp267HtbmbXY8/HUDDL)  
-**Clickable prototype, starting at the Splash screen:** [https://www.figma.com/proto/kqWMa2AGXpp267HtbmbXY8/HUDDL?node-id=2-2](https://www.figma.com/proto/kqWMa2AGXpp267HtbmbXY8/HUDDL?node-id=2-2)
+**FIGMA FILE:** [https://www.figma.com/design/kqWMa2AGXpp267HtbmbXY8/HUDDL](https://www.figma.com/design/kqWMa2AGXpp267HtbmbXY8/HUDDL)  
+**FIGMA PREVIEW:** [https://www.figma.com/proto/kqWMa2AGXpp267HtbmbXY8/HUDDL?node-id=2-2](https://www.figma.com/proto/kqWMa2AGXpp267HtbmbXY8/HUDDL?node-id=2-2)
+
+The **Figma file** opens the design itself (screens, components and prototype connections). The **Figma preview** plays the clickable prototype, starting at the Splash screen.
 
 This is my original HUDDL design file in the ENVERGA EDUCATION team. It is the design the SwiftUI app was built from. The prototype starts at the Splash screen and goes through onboarding, sign up, profile setup, the main tabs (Home, HUDDLE, Chat, Profile) and the orange “+” button for hosting a game.
 
