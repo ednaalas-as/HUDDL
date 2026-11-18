@@ -1,8 +1,8 @@
 # HUDDL Midterm — Things to do before you submit
 
 ## Must do
-- [ ] **Read and personalize the reflection (section 6).** It's written from the verifiable project history. Change anything that doesn't sound like you. If you wrote or edited any code yourself, add one or two sentences naming those parts. Don't claim more than you did.
-- [ ] **Check your course's AI-use policy.** The reflection openly says an AI coding assistant wrote most of the code under your direction. If the policy asks for a specific disclosure format, follow it.
+- [ ] **Read the reflection (section 6) once more.** It now says you wrote almost half of the code, and that the assistant continued it and revised most of it under your direction. If you can, add a sentence naming which parts you wrote yourself (for example, specific screens).
+- [ ] **Check your course's AI-use policy.** The reflection openly says you wrote almost half of the code and an AI coding assistant continued and revised it under your direction. If the policy asks for a specific disclosure format, follow it.
 - [x] **Cover page filled in:** Edna D. Alas-as · CSSE105: Mobile Application Development · Dean Rodrigo C. Belleza.
 - [ ] **Open the three links from the PDF** (cover and section 2) to confirm they work for you:
   - FIGMA DESIGN LINK: https://www.figma.com/design/kqWMa2AGXpp267HtbmbXY8/HUDDL?node-id=336-1626&t=v8gXf6gIJC83mmb6-1 In Figma → Share, make sure your instructor can view it ("Anyone with the link can view", or invite them).

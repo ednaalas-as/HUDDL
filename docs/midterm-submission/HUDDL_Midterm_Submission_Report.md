@@ -70,7 +70,7 @@ The host gets a notification, opens the Applicants screen and accepts or decline
 | Design | Figma |
 | Testing | XCTest (unit), XCUITest (end-to-end UI), a Node.js backend smoke test |
 | Version control | Git and GitHub |
-| Development help | An AI coding assistant (Claude Code), used under my direction |
+| Development help | An AI coding assistant (Claude Code), which continued and revised my code under my direction |
 
 > **Where the app runs right now.** HUDDL runs on the Firebase Emulator Suite, which is Google's official local version of Firebase. The real project `huddl-app-ph` exists, and its database and security rules are deployed. Running the whole app in the cloud needs Firebase's paid Blaze plan, because HUDDL's Cloud Functions and photo storage are not available on the free plan. I don't have a payment method for it yet.
 
@@ -270,7 +270,7 @@ The design keeps a simple rule: the app handles the screens and quick checks, an
 
 I started HUDDL as a design project. Before there was any code, I spent a lot of time in Figma building the screens and wiring the prototype so every button went somewhere. When I first tried to have the design redone by an AI tool, I didn't like the result, so I asked for it to be done my way and kept my original components and layout. That decision carried into development: the rule for the app was to match my Figma file, not to redesign it.
 
-For the development, I worked with an AI coding assistant (Claude Code). I want to be honest about this: most of the Swift and Firebase code was written by the assistant, based on my Figma design and the instructions I wrote for it. My part was deciding what HUDDL should do and checking that the results matched what I wanted. I chose iOS 17 as the minimum version, decided to build and test on Firebase's local emulator first, and replaced the placeholder athletes in the design with eight real people I chose, each with their own account. Working this way taught me that the assistant can be confidently wrong. At different points it built against the wrong Figma file, created three Firebase projects when I needed one, and first put my database in the US instead of Singapore. I learned to check its work instead of just accepting it.
+For the development, I wrote almost half of the code myself, and then an AI coding assistant (Claude Code) continued it. I want to be honest about how that went. The assistant built the parts I had not reached yet. It also found imperfections in the code that was already there and revised most of it, including parts I had written. All of those changes still followed my direction: my Figma design, the instructions I wrote, and the decisions I made along the way. I chose iOS 17 as the minimum version, decided to build and test on Firebase's local emulator first, and replaced the placeholder athletes in the design with eight real people I chose, each with their own account. Working this way taught me two things. Seeing my own code revised showed me where it was weak and how it could be cleaner. I also learned that the assistant can be confidently wrong. At different points it built against the wrong Figma file, created three Firebase projects when I needed one, and first put my database in the US instead of Singapore. I learned to check its work instead of just accepting it.
 
 I learned a lot about how a SwiftUI app fits together by going through what was built. I now understand that the screens are small views that read from shared state, that one router object controls navigation for each tab, and that the same components (the header, the toast, the confirmation dialog) are reused everywhere instead of being redrawn on each screen. I also understand that what looks finished is not the same as what works. The first build had zero errors, but the app crashed the moment it opened because Firebase was used before it was set up.
 
@@ -283,7 +283,7 @@ Testing changed how I think about “done.” Tapping through the simulator by h
 
 ### What I plan to complete for the final project
 
-I want to test everything that is still marked Not Verified, especially photo uploads, posting results and sharing moments. I also want to deploy the full backend if I can get access to the Blaze plan. Writing more of the remaining work myself, with the assistant explaining instead of writing, is also a goal for the final.
+I want to test everything that is still marked Not Verified, especially photo uploads, posting results and sharing moments. I also want to deploy the full backend if I can get access to the Blaze plan. Since I wrote almost half of the midterm code, my goal for the final is to write more of the remaining work myself, with the assistant reviewing and explaining instead of rewriting.
 
 
 ## 7. Final Project Development Plan
