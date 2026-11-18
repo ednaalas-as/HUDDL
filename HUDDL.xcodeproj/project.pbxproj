@@ -1,0 +1,545 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A10000000000000000000101 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000201 /* FirebaseAuth */; };
+		A10000000000000000000102 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000202 /* FirebaseFirestore */; };
+		A10000000000000000000103 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000203 /* FirebaseStorage */; };
+		A10000000000000000000104 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000204 /* FirebaseMessaging */; };
+		A10000000000000000000105 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000205 /* FirebaseFunctions */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A10000000000000000000301 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A10000000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A10000000000000000000401;
+			remoteInfo = HUDDL;
+		};
+		A10000000000000000000302 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A10000000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A10000000000000000000401;
+			remoteInfo = HUDDL;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		A10000000000000000000501 /* HUDDL.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HUDDL.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A10000000000000000000502 /* HUDDLTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HUDDLTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A10000000000000000000503 /* HUDDLUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HUDDLUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		A10000000000000000000601 /* HUDDL */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = HUDDL;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000602 /* HUDDLTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = HUDDLTests;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000603 /* HUDDLUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = HUDDLUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A10000000000000000000701 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000000000000000000101 /* FirebaseAuth in Frameworks */,
+				A10000000000000000000102 /* FirebaseFirestore in Frameworks */,
+				A10000000000000000000103 /* FirebaseStorage in Frameworks */,
+				A10000000000000000000104 /* FirebaseMessaging in Frameworks */,
+				A10000000000000000000105 /* FirebaseFunctions in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A10000000000000000000702 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A10000000000000000000703 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A10000000000000000000801 = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000601 /* HUDDL */,
+				A10000000000000000000602 /* HUDDLTests */,
+				A10000000000000000000603 /* HUDDLUITests */,
+				A10000000000000000000802 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A10000000000000000000802 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000501 /* HUDDL.app */,
+				A10000000000000000000502 /* HUDDLTests.xctest */,
+				A10000000000000000000503 /* HUDDLUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A10000000000000000000401 /* HUDDL */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A10000000000000000000901 /* Build configuration list for PBXNativeTarget "HUDDL" */;
+			buildPhases = (
+				A10000000000000000000A01 /* Sources */,
+				A10000000000000000000701 /* Frameworks */,
+				A10000000000000000000B01 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				A10000000000000000000601 /* HUDDL */,
+			);
+			name = HUDDL;
+			packageProductDependencies = (
+				A10000000000000000000201 /* FirebaseAuth */,
+				A10000000000000000000202 /* FirebaseFirestore */,
+				A10000000000000000000203 /* FirebaseStorage */,
+				A10000000000000000000204 /* FirebaseMessaging */,
+				A10000000000000000000205 /* FirebaseFunctions */,
+			);
+			productName = HUDDL;
+			productReference = A10000000000000000000501 /* HUDDL.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A10000000000000000000402 /* HUDDLTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A10000000000000000000902 /* Build configuration list for PBXNativeTarget "HUDDLTests" */;
+			buildPhases = (
+				A10000000000000000000A02 /* Sources */,
+				A10000000000000000000702 /* Frameworks */,
+				A10000000000000000000B02 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A10000000000000000000C01 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				A10000000000000000000602 /* HUDDLTests */,
+			);
+			name = HUDDLTests;
+			productName = HUDDLTests;
+			productReference = A10000000000000000000502 /* HUDDLTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		A10000000000000000000403 /* HUDDLUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A10000000000000000000904 /* Build configuration list for PBXNativeTarget "HUDDLUITests" */;
+			buildPhases = (
+				A10000000000000000000A03 /* Sources */,
+				A10000000000000000000703 /* Frameworks */,
+				A10000000000000000000B03 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A10000000000000000000C02 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				A10000000000000000000603 /* HUDDLUITests */,
+			);
+			name = HUDDLUITests;
+			productName = HUDDLUITests;
+			productReference = A10000000000000000000503 /* HUDDLUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A10000000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2600;
+				LastUpgradeCheck = 2600;
+				TargetAttributes = {
+					A10000000000000000000401 = {
+						CreatedOnToolsVersion = 26.0;
+					};
+					A10000000000000000000402 = {
+						CreatedOnToolsVersion = 26.0;
+						TestTargetID = A10000000000000000000401;
+					};
+					A10000000000000000000403 = {
+						CreatedOnToolsVersion = 26.0;
+						TestTargetID = A10000000000000000000401;
+					};
+				};
+			};
+			buildConfigurationList = A10000000000000000000903 /* Build configuration list for PBXProject "HUDDL" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A10000000000000000000801;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				A10000000000000000000D01 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = A10000000000000000000802 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A10000000000000000000401 /* HUDDL */,
+				A10000000000000000000402 /* HUDDLTests */,
+				A10000000000000000000403 /* HUDDLUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A10000000000000000000B01 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A10000000000000000000B02 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A10000000000000000000B03 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A10000000000000000000A01 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A10000000000000000000A02 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A10000000000000000000A03 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A10000000000000000000C01 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A10000000000000000000401 /* HUDDL */;
+			targetProxy = A10000000000000000000301 /* PBXContainerItemProxy */;
+		};
+		A10000000000000000000C02 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A10000000000000000000401 /* HUDDL */;
+			targetProxy = A10000000000000000000302 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		A10000000000000000000E01 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		A10000000000000000000E02 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A10000000000000000000E03 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 42;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = HUDDL;
+				INFOPLIST_KEY_NSCameraUsageDescription = "HUDDL uses your camera so you can take profile photos and share game moments.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "HUDDL uses your location to suggest games near your home area.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "HUDDL lets you choose photos for your profile, posts and chats.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.huddl.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		A10000000000000000000E04 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 42;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = HUDDL;
+				INFOPLIST_KEY_NSCameraUsageDescription = "HUDDL uses your camera so you can take profile photos and share game moments.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "HUDDL uses your location to suggest games near your home area.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "HUDDL lets you choose photos for your profile, posts and chats.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.huddl.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		A10000000000000000000E05 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.huddl.appTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HUDDL.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/HUDDL";
+			};
+			name = Debug;
+		};
+		A10000000000000000000E06 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.huddl.appTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HUDDL.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/HUDDL";
+			};
+			name = Release;
+		};
+		A10000000000000000000E07 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.huddl.appUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_TARGET_NAME = HUDDL;
+			};
+			name = Debug;
+		};
+		A10000000000000000000E08 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.huddl.appUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_TARGET_NAME = HUDDL;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A10000000000000000000901 /* Build configuration list for PBXNativeTarget "HUDDL" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A10000000000000000000E03 /* Debug */,
+				A10000000000000000000E04 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A10000000000000000000902 /* Build configuration list for PBXNativeTarget "HUDDLTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A10000000000000000000E05 /* Debug */,
+				A10000000000000000000E06 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A10000000000000000000903 /* Build configuration list for PBXProject "HUDDL" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A10000000000000000000E01 /* Debug */,
+				A10000000000000000000E02 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A10000000000000000000904 /* Build configuration list for PBXNativeTarget "HUDDLUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A10000000000000000000E07 /* Debug */,
+				A10000000000000000000E08 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A10000000000000000000D01 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.19.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A10000000000000000000201 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A10000000000000000000D01 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		A10000000000000000000202 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A10000000000000000000D01 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		A10000000000000000000203 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A10000000000000000000D01 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
+		A10000000000000000000204 /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A10000000000000000000D01 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
+		A10000000000000000000205 /* FirebaseFunctions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A10000000000000000000D01 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFunctions;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = A10000000000000000000001 /* Project object */;
+}

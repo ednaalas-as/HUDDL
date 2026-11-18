@@ -1,0 +1,14 @@
+build/
+*.xcuserstate
+xcuserdata/
+GoogleService-Info.plist
+firebase/functions/node_modules/
+firebase/functions/lib/
+firebase/functions/seed-credentials.local.json
+firebase/.emulator-data/
+firebase/*.log
+.DS_Store
+
+# Presenter-only credentials (never commit)
+docs/presentation/HUDDL_ACCOUNTS_PRIVATE.md
+*PRIVATE*.md

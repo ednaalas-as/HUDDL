@@ -1,0 +1,29 @@
+rules_version = '2';
+
+// Uploads are owner-scoped: {folder}/{uid}/{file}. Images ≤ 10 MB, videos ≤ 100 MB.
+service firebase.storage {
+  match /b/{bucket}/o {
+    function signedIn() { return request.auth != null; }
+    function isImage() { return request.resource.contentType.matches('image/.*') && request.resource.size < 10 * 1024 * 1024; }
+    function isVideo() { return request.resource.contentType.matches('video/.*') && request.resource.size < 100 * 1024 * 1024; }
+
+    match /avatars/{uid}/{file} {
+      allow read: if signedIn();
+      allow write: if signedIn() && request.auth.uid == uid && isImage();
+      allow delete: if signedIn() && request.auth.uid == uid;
+    }
+    match /posts/{uid}/{file} {
+      allow read: if signedIn();
+      allow write: if signedIn() && request.auth.uid == uid && (isImage() || isVideo());
+      allow delete: if signedIn() && request.auth.uid == uid;
+    }
+    match /chats/{uid}/{file} {
+      allow read: if signedIn();
+      allow write: if signedIn() && request.auth.uid == uid && isImage();
+    }
+    match /support/{uid}/{file} {
+      allow read: if false;
+      allow write: if signedIn() && request.auth.uid == uid && isImage();
+    }
+  }
+}

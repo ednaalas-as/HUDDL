@@ -1,0 +1,162 @@
+rules_version = '2';
+
+// HUDDL Firestore rules.
+// Principle: clients may write only their own data. Anything that changes rosters, other players'
+// data, counters or notifications is done by Cloud Functions (Admin SDK bypasses these rules).
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() { return request.auth != null; }
+    function isMe(uid) { return signedIn() && request.auth.uid == uid; }
+    function onlyChanges(keys) { return request.resource.data.diff(resource.data).affectedKeys().hasOnly(keys); }
+
+    // ---------- Users ----------
+    match /users/{uid} {
+      allow read: if signedIn();
+      // Profile doc is created in the sign-up transaction together with usernames/{name}.
+      allow create: if isMe(uid)
+        && request.resource.data.username is string
+        && existsAfter(/databases/$(database)/documents/usernames/$(request.resource.data.username))
+        && getAfter(/databases/$(database)/documents/usernames/$(request.resource.data.username)).data.uid == uid
+        && (!('stats' in request.resource.data) || (request.resource.data.stats.games == 0
+             && request.resource.data.stats.wins == 0 && request.resource.data.stats.hosted == 0
+             && !('rating' in request.resource.data.stats) && !('reliability' in request.resource.data.stats)));
+      // Owners can edit their profile, but never username, stats or reliability.
+      allow update: if isMe(uid) && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['username', 'stats']);
+      allow delete: if false;
+
+      match /swipes/{gameId}      { allow read, write: if isMe(uid); }
+      match /saved/{gameId}       { allow read, write: if isMe(uid); }
+      match /hiddenPosts/{postId} { allow read, write: if isMe(uid); }
+      match /blocked/{otherId}    { allow read: if isMe(uid); allow write: if isMe(uid) && otherId != uid; }
+      match /private/{doc}        { allow read: if isMe(uid); allow write: if false; }
+    }
+
+    // Username → uid (uniqueness + username sign-in). Holds no email.
+    match /usernames/{name} {
+      allow get: if true;               // availability check during sign up
+      allow list: if false;
+      allow create: if signedIn() && request.resource.data.keys().hasOnly(['uid'])
+        && request.resource.data.uid == request.auth.uid
+        && name.matches('^[a-z0-9._-]{3,30}$');
+      allow update, delete: if false;
+    }
+
+    // ---------- Venues (curated) ----------
+    match /venues/{venueId} {
+      allow read: if signedIn();
+      allow write: if false;
+    }
+
+    // ---------- Games ----------
+    match /games/{gameId} {
+      allow read: if signedIn();
+      // Hosts create games directly. Fixed teams / no subs are always on; 2 teams; ≤6 per team;
+      // the host starts as the only member on Team A.
+      allow create: if signedIn()
+        && request.resource.data.host.id == request.auth.uid
+        && request.resource.data.rules.fixedTeams == true
+        && request.resource.data.rules.noSubs == true
+        && request.resource.data.format.teams == 2
+        && request.resource.data.format.playersPerTeam >= 1
+        && request.resource.data.format.playersPerTeam <= 6
+        && request.resource.data.teams.size() == 2
+        && request.resource.data.status == 'open'
+        && request.resource.data.memberIds == [request.auth.uid]
+        && request.resource.data.title is string && request.resource.data.title.size() > 0
+        && request.resource.data.title.size() <= 60;
+      // All later changes (edit, roster, cancel, result) go through Cloud Functions.
+      allow update, delete: if false;
+
+      match /applications/{applicantId} {
+        // Applicants see their own; the host sees all of their game's applications.
+        allow read: if isMe(applicantId) || (signedIn() && get(/databases/$(database)/documents/games/$(gameId)).data.host.id == request.auth.uid);
+        allow write: if false;
+      }
+      match /invites/{inviteeId} {
+        allow read: if isMe(inviteeId) || (signedIn() && get(/databases/$(database)/documents/games/$(gameId)).data.host.id == request.auth.uid);
+        allow write: if false;
+      }
+    }
+    // Collection-group reads of the caller's own applications / invites.
+    // Collection-group queries must be provable from the query's own filters, so these check stored fields
+    // (the app queries applicantId == me / invitee.id == me).
+    match /{path=**}/applications/{applicantId} { allow read: if signedIn() && resource.data.applicantId == request.auth.uid; }
+    match /{path=**}/invites/{inviteeId}        { allow read: if signedIn() && resource.data.invitee.id == request.auth.uid; }
+
+    // ---------- Feed ----------
+    match /posts/{postId} {
+      allow read: if signedIn() && (resource.data.audience == 'everyone' || request.auth.uid in resource.data.visibleTo);
+      allow write: if false;  // created by createPost / postResult / repost functions; counters by triggers
+
+      match /likes/{uid} {
+        allow read: if signedIn();
+        allow create: if isMe(uid) && request.resource.data.uid == uid;
+        allow delete: if isMe(uid);
+        allow update: if false;
+      }
+      match /comments/{commentId} {
+        allow read: if signedIn();
+        allow create: if signedIn()
+          && request.resource.data.author.id == request.auth.uid
+          && request.resource.data.text is string
+          && request.resource.data.text.size() > 0 && request.resource.data.text.size() <= 1000;
+        allow delete: if signedIn() && resource.data.author.id == request.auth.uid;
+        allow update: if signedIn() && resource.data.author.id == request.auth.uid && onlyChanges(['createdAt']);
+      }
+    }
+    match /{path=**}/likes/{likeId} { allow read: if signedIn() && resource.data.uid == request.auth.uid; }
+
+    // ---------- Chat ----------
+    match /chats/{chatId} {
+      allow read: if signedIn() && request.auth.uid in resource.data.memberIds;
+      // Members may only reset their own unread counter.
+      allow update: if signedIn() && request.auth.uid in resource.data.memberIds
+        && onlyChanges(['unread']) && request.resource.data.unread[request.auth.uid] == 0;
+      allow create, delete: if false;
+
+      match /messages/{messageId} {
+        allow read: if signedIn() && request.auth.uid in get(/databases/$(database)/documents/chats/$(chatId)).data.memberIds;
+        // Members can post while the chat is not read-only (ended games are read-only).
+        allow create: if signedIn()
+          && request.resource.data.senderId == request.auth.uid
+          && request.resource.data.system == false
+          && request.auth.uid in get(/databases/$(database)/documents/chats/$(chatId)).data.memberIds
+          && get(/databases/$(database)/documents/chats/$(chatId)).data.readOnly == false
+          && (request.resource.data.get('text', '') is string)
+          && request.resource.data.get('text', '').size() <= 2000;
+        allow update, delete: if false;
+      }
+    }
+
+    // ---------- Notifications ----------
+    match /notifications/{uid}/items/{id} {
+      allow read: if isMe(uid);
+      allow update: if isMe(uid) && onlyChanges(['read', 'resolved', 'type']);
+      allow delete: if isMe(uid);
+      allow create: if false;
+    }
+
+    // ---------- Reviews, reports, support ----------
+    match /reviews/{reviewId} {
+      allow read: if signedIn();
+      allow write: if false;  // OPEN: review writing flow not designed yet
+      match /helpful/{uid} {
+        allow read: if signedIn();
+        allow create: if isMe(uid);
+        allow update, delete: if false;
+      }
+    }
+    // Reports are anonymous to the target and write-only for clients.
+    match /reports/{reportId} {
+      allow create: if signedIn() && request.resource.data.reporterId == request.auth.uid
+        && request.resource.data.targetType in ['post', 'user'];
+      allow read, update, delete: if false;
+    }
+    match /supportTickets/{id} {
+      allow create: if signedIn() && request.resource.data.uid == request.auth.uid
+        && request.resource.data.message is string && request.resource.data.message.size() >= 10;
+      allow read, update, delete: if false;
+    }
+  }
+}

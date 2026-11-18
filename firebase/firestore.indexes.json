@@ -1,0 +1,23 @@
+{
+  "indexes": [
+    { "collectionGroup": "games", "queryScope": "COLLECTION", "fields": [
+      { "fieldPath": "status", "order": "ASCENDING" }, { "fieldPath": "inviteOnly", "order": "ASCENDING" }, { "fieldPath": "geohash", "order": "ASCENDING" } ] },
+    { "collectionGroup": "games", "queryScope": "COLLECTION", "fields": [
+      { "fieldPath": "host.id", "order": "ASCENDING" }, { "fieldPath": "startAt", "order": "DESCENDING" } ] },
+    { "collectionGroup": "games", "queryScope": "COLLECTION", "fields": [
+      { "fieldPath": "memberIds", "arrayConfig": "CONTAINS" }, { "fieldPath": "startAt", "order": "DESCENDING" } ] },
+    { "collectionGroup": "posts", "queryScope": "COLLECTION", "fields": [
+      { "fieldPath": "author.id", "order": "ASCENDING" }, { "fieldPath": "audience", "order": "ASCENDING" }, { "fieldPath": "createdAt", "order": "DESCENDING" } ] },
+    { "collectionGroup": "posts", "queryScope": "COLLECTION", "fields": [
+      { "fieldPath": "gameId", "order": "ASCENDING" }, { "fieldPath": "createdAt", "order": "DESCENDING" } ] },
+    { "collectionGroup": "chats", "queryScope": "COLLECTION", "fields": [
+      { "fieldPath": "memberIds", "arrayConfig": "CONTAINS" }, { "fieldPath": "updatedAt", "order": "DESCENDING" } ] },
+    { "collectionGroup": "reviews", "queryScope": "COLLECTION", "fields": [
+      { "fieldPath": "revieweeId", "order": "ASCENDING" }, { "fieldPath": "createdAt", "order": "DESCENDING" } ] }
+  ],
+  "fieldOverrides": [
+    { "collectionGroup": "applications", "fieldPath": "applicantId", "indexes": [ { "order": "ASCENDING", "queryScope": "COLLECTION_GROUP" } ] },
+    { "collectionGroup": "invites", "fieldPath": "invitee.id", "indexes": [ { "order": "ASCENDING", "queryScope": "COLLECTION_GROUP" } ] },
+    { "collectionGroup": "likes", "fieldPath": "uid", "indexes": [ { "order": "ASCENDING", "queryScope": "COLLECTION_GROUP" } ] }
+  ]
+}
