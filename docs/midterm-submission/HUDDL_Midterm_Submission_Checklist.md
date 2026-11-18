@@ -1,0 +1,28 @@
+# HUDDL Midterm — Things to do before you submit
+
+## Must do
+- [ ] **Read and personalize the reflection (section 6).** It's written from the verifiable project history. Change anything that doesn't sound like you. If you wrote or edited any code yourself, add one or two sentences naming those parts. Don't claim more than you did.
+- [ ] **Check your course's AI-use policy.** The reflection openly says an AI coding assistant wrote most of the code under your direction. If the policy asks for a specific disclosure format, follow it.
+- [ ] **Fill in the cover page:** replace `[Course code and title]` and `[Instructor name]`. Ask Claude to regenerate the PDF with the real values, or edit the PDF.
+- [ ] **Open both links from the PDF** to confirm they work for you:
+  - Figma: https://www.figma.com/design/kqWMa2AGXpp267HtbmbXY8/HUDDL. In Figma → Share, make sure your instructor can view it ("Anyone with the link can view", or invite them).
+  - GitHub: https://github.com/ednaalas-as/HUDDL (public)
+
+## Should do (to meet "100% Figma prototype")
+- [ ] **Add the 12 missing prototype links** in your original Figma file. Each needs a link from the step before:
+  - SIGN IN · ERROR, SIGN UP · ERROR (from SIGN IN / SIGN UP buttons)
+  - HUDDLE · DISCOVER · PASSED and · LIKED (from the ✕ / ♥ buttons)
+  - HUDDLE · NOT INTERESTED · MOVED (from the INTERESTED button)
+  - CONFIRM · REMOVE · I1 and · N1 (from the remove buttons on the Expired tabs)
+  - GAME DETAILS · APPLY · UNCHECKED and · SENDING (from SEND APPLICATION)
+  - HOST A GAME · ERROR (from POST GAME)
+  - CONFIRM · JOIN GAME and CONFIRM · DECLINE INVITE (from the invite ACCEPT / DECLINE buttons)
+
+  Claude can add these links for you if you give permission. It only adds connections and doesn't change any design.
+- [ ] Optional: export 4–6 frames from Figma (select a frame → Export → PNG) to add as figures in section 2. Figma's export service returned blank images for this file, so the PDF uses the link only.
+
+## Good to know before presenting
+- The app runs on the **Firebase Emulator Suite**. Start it with `firebase/emulators.sh` and re-seed before demoing (see `docs/presentation/HUDDL_PRESENTATION_GUIDE.md`).
+- Coverage numbers, in case someone asks: Figma 92%, SwiftUI interface 97%, **functionality verified 60%**, functionality implemented 96%.
+- The public repo includes the full names of your eight test players (in the seed script, docs and screenshots). They're placeholders you chose; if any of them prefers not to be named publicly, Claude can replace the names.
+- Never share `docs/presentation/HUDDL_ACCOUNTS_PRIVATE.md` or `firebase/functions/seed-credentials.local.json`. They aren't in the repo.
