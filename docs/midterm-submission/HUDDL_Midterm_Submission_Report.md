@@ -101,15 +101,18 @@ I counted the frames and prototype connections directly from the file instead of
 
 | Measure | Result |
 |---|---|
-| Frames on the SCREENS page (screens plus their states, sheets and dialogs) | 220 |
-| Screen-to-screen prototype connections | 1,644 (including 292 overlays such as sheets and dialogs, and 287 back actions) |
-| Component state changes (toggles, chips, checkboxes), counted separately | 305 |
+| Playable frames on the SCREENS page (screens plus their states, sheets and dialogs) | 220 |
+| Screen-to-screen prototype connections | 1,648 (including 292 overlays such as sheets and dialogs, and 287 back or close actions) |
+| Component state changes (toggles, chips, checkboxes), counted separately | 315 |
 | Prototype flows | 4 (Flow 1–4, starting at the Splash screen) |
-| Frames with no way forward (dead ends) | 0 |
+| Screens with no way forward (dead ends) | 0 (toasts and sheets close back to the screen they open over) |
+| Links pointing to a hidden or unplayable frame | 0 (643 fixed on Nov 18, 2026; see the note below) |
 | Frames that no link points to | 1: the Splash screen, which is the starting point of the flows |
 | Planned screens and functions represented in Figma | 50 of 50 (see the coverage table in section 4) |
 
 Every planned screen is in the file, every frame has at least one way forward, and every frame except the starting Splash screen can be reached through the prototype. That includes error states, loading states and confirmation dialogs. **The prototype covers 100% of the planned screens and is fully connected.**
+
+> **Connection fix (Nov 18, 2026):** Nineteen base screens, including Sign Up, Sign In, the Home navigation page, Discover, Chat and Profile, sat inside a hidden group, so links to them did nothing when the prototype was played. One example was the **Get Started** button on onboarding page 3. I left that group hidden and unchanged. I put visible copies of the 19 screens in a new **BASE SCREENS** section and pointed all 643 affected links to the copies. Played in Figma, the flow now runs Splash → onboarding 1–3 → Get Started → Sign Up → its error and loading states.
 
 > **About screenshots of the Figma frames:** Figma's export service returned blank images for this file, so this section uses the clickable link instead of frame images. The screens can be opened directly from the link above.
 

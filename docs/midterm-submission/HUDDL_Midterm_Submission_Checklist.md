@@ -10,7 +10,7 @@
   - GitHub: https://github.com/ednaalas-as/HUDDL (public)
 
 ## Figma prototype: verified complete, nothing to do
-- The audit counted **220 frames, 1,644 screen links, 0 dead ends**. Only the Splash screen has no incoming link, because it's where the flows start. No links needed adding, and your Figma file wasn't changed.
+- **Connections fixed on Nov 18, 2026:** 19 base screens (Sign Up, Sign In, Home, Discover, Chat, Profile, …) were inside a hidden group, so links to them, such as onboarding 3's **Get Started**, did nothing. The group is still hidden and unchanged. Visible copies now sit in a new **BASE SCREENS** section, and 643 links point to them. Audit now: 220 playable frames, 1,648 links, 0 links to hidden frames. Only the Splash screen has no incoming link, because it's where the flows start.
 - Optional: export 4–6 frames from Figma (select a frame → Export → PNG) to add as figures in section 2. Figma's export service returned blank images for this file, so the PDF uses the link only.
 
 ## Good to know before presenting
