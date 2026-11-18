@@ -1,6 +1,6 @@
 # HUDDL — Midterm Submission (full written content)
 
-Student: Edna Alas-as · Manuel S. Enverga University Foundation · Course: [COURSE] · Instructor: [INSTRUCTOR]
+Student: Edna D. Alas-as · Manuel S. Enverga University Foundation · Course: CSSE105: Mobile Application Development · Instructor: Dean Rodrigo C. Belleza
 
 
 ## 1. Application Overview
@@ -330,6 +330,5 @@ I want to test everything that is still marked Not Verified, especially photo up
 
 ## Outstanding requirements
 
-- Course and instructor are placeholders on the cover page.
 - The reflection must be reviewed and personalized by the student before submission.
 - Figma frame images couldn't be exported automatically (Figma returned blank renders), so the PDF relies on the link.

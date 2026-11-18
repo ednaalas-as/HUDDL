@@ -3,7 +3,7 @@
 ## Must do
 - [ ] **Read and personalize the reflection (section 6).** It's written from the verifiable project history. Change anything that doesn't sound like you. If you wrote or edited any code yourself, add one or two sentences naming those parts. Don't claim more than you did.
 - [ ] **Check your course's AI-use policy.** The reflection openly says an AI coding assistant wrote most of the code under your direction. If the policy asks for a specific disclosure format, follow it.
-- [ ] **Fill in the cover page:** replace `[Course code and title]` and `[Instructor name]`. Ask Claude to regenerate the PDF with the real values, or edit the PDF.
+- [x] **Cover page filled in:** Edna D. Alas-as · CSSE105: Mobile Application Development · Dean Rodrigo C. Belleza.
 - [ ] **Open both links from the PDF** to confirm they work for you:
   - Figma: https://www.figma.com/design/kqWMa2AGXpp267HtbmbXY8/HUDDL. In Figma → Share, make sure your instructor can view it ("Anyone with the link can view", or invite them).
   - GitHub: https://github.com/ednaalas-as/HUDDL (public)
