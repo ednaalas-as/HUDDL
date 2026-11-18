@@ -77,10 +77,10 @@ The host gets a notification, opens the Applicants screen and accepts or decline
 
 ## 2. Figma Prototype
 
-**FIGMA FILE:** [https://www.figma.com/design/kqWMa2AGXpp267HtbmbXY8/HUDDL](https://www.figma.com/design/kqWMa2AGXpp267HtbmbXY8/HUDDL)  
-**FIGMA PREVIEW:** [https://www.figma.com/proto/kqWMa2AGXpp267HtbmbXY8/HUDDL?node-id=2-2](https://www.figma.com/proto/kqWMa2AGXpp267HtbmbXY8/HUDDL?node-id=2-2)
+**FIGMA DESIGN LINK:** [https://www.figma.com/design/kqWMa2AGXpp267HtbmbXY8/HUDDL?node-id=336-1626&t=v8gXf6gIJC83mmb6-1](https://www.figma.com/design/kqWMa2AGXpp267HtbmbXY8/HUDDL?node-id=336-1626&t=v8gXf6gIJC83mmb6-1)  
+**FIGMA PROTOTYPE LINK:** [https://www.figma.com/proto/kqWMa2AGXpp267HtbmbXY8/HUDDL?node-id=305-714&t=Ro4JCO5iI4iX0zSc-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=2%3A2&show-proto-sidebar=1](https://www.figma.com/proto/kqWMa2AGXpp267HtbmbXY8/HUDDL?node-id=305-714&t=Ro4JCO5iI4iX0zSc-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=2%3A2&show-proto-sidebar=1)
 
-The **Figma file** opens the design itself (screens, components and prototype connections). The **Figma preview** plays the clickable prototype, starting at the Splash screen.
+The **design link** opens the file itself (screens, components and prototype connections). The **prototype link** plays the clickable prototype with the flow list beside it, opening on the first onboarding screen; restarting the flow begins at the Splash screen.
 
 This is my original HUDDL design file in the ENVERGA EDUCATION team. It is the design the SwiftUI app was built from. The prototype starts at the Splash screen and goes through onboarding, sign up, profile setup, the main tabs (Home, HUDDLE, Chat, Profile) and the orange “+” button for hosting a game.
 

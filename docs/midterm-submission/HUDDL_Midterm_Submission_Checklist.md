@@ -5,8 +5,8 @@
 - [ ] **Check your course's AI-use policy.** The reflection openly says an AI coding assistant wrote most of the code under your direction. If the policy asks for a specific disclosure format, follow it.
 - [x] **Cover page filled in:** Edna D. Alas-as · CSSE105: Mobile Application Development · Dean Rodrigo C. Belleza.
 - [ ] **Open the three links from the PDF** (cover and section 2) to confirm they work for you:
-  - FIGMA FILE: https://www.figma.com/design/kqWMa2AGXpp267HtbmbXY8/HUDDL. In Figma → Share, make sure your instructor can view it ("Anyone with the link can view", or invite them).
-  - FIGMA PREVIEW: https://www.figma.com/proto/kqWMa2AGXpp267HtbmbXY8/HUDDL?node-id=2-2 (plays the prototype from the Splash screen)
+  - FIGMA DESIGN LINK: https://www.figma.com/design/kqWMa2AGXpp267HtbmbXY8/HUDDL?node-id=336-1626&t=v8gXf6gIJC83mmb6-1 In Figma → Share, make sure your instructor can view it ("Anyone with the link can view", or invite them).
+  - FIGMA PROTOTYPE LINK: https://www.figma.com/proto/kqWMa2AGXpp267HtbmbXY8/HUDDL?node-id=305-714&t=Ro4JCO5iI4iX0zSc-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=2%3A2&show-proto-sidebar=1 (opens on onboarding screen 1, with the flow list beside it)
   - GitHub: https://github.com/ednaalas-as/HUDDL (public)
 
 ## Figma prototype: verified complete, nothing to do
