@@ -99,31 +99,19 @@ I counted the frames and prototype connections directly from the file instead of
 
 | Measure | Result |
 |---|---|
-| Frames on the SCREENS page (screens plus their states, sheets and dialogs) | 201 |
-| Prototype connections | 1,623 (including 242 overlays and 277 back actions) |
+| Frames on the SCREENS page (screens plus their states, sheets and dialogs) | 220 |
+| Screen-to-screen prototype connections | 1,644 (including 292 overlays such as sheets and dialogs, and 287 back actions) |
+| Component state changes (toggles, chips, checkboxes), counted separately | 305 |
 | Prototype flows | 4 (Flow 1–4, starting at the Splash screen) |
 | Frames with no way forward (dead ends) | 0 |
-| Frames that no link points to | 13: the Splash start frame plus 12 state frames |
+| Frames that no link points to | 1: the Splash screen, which is the starting point of the flows |
 | Planned screens and functions represented in Figma | 50 of 50 (see the coverage table in section 4) |
 
-
-#### Frames that still need an incoming link
-
-The Splash frame is the starting point, so it doesn't need one. The other 12 are states that appear only after an action (an error, a loading state or a confirmation), and they still need a link from the step before:
-
-- SIGN IN · ERROR and SIGN UP · ERROR
-- HUDDLE · DISCOVER · PASSED and · LIKED
-- HUDDLE · NOT INTERESTED · MOVED
-- CONFIRM · REMOVE · I1 and · N1
-- GAME DETAILS · APPLY · UNCHECKED and · SENDING
-- HOST A GAME · ERROR
-- CONFIRM · JOIN GAME and CONFIRM · DECLINE INVITE
-
-So every planned screen is represented, but strictly speaking the prototype is **not yet 100% connected**. Adding these 12 links will finish it. Weighting partly linked areas as half, the prototype scores **92%** in the coverage table.
+Every planned screen is in the file, every frame has at least one way forward, and every frame except the starting Splash screen can be reached through the prototype. That includes error states, loading states and confirmation dialogs. **The prototype covers 100% of the planned screens and is fully connected.**
 
 > **About screenshots of the Figma frames:** Figma's export service returned blank images for this file, so this section uses the clickable link instead of frame images. The screens can be opened directly from the link above.
 
-> **About a second Figma file:** I also have a simplified redesign called “HUDDL – Full App” ([link](https://www.figma.com/design/x42EaUZK7lkrMEEa8EeseC/HUDDL---Full-App), 63 frames). I didn't use it as the prototype, because the working app follows the original design above.
+> **About a second Figma file:** I also have a simplified redesign called “HUDDL – Full App” ([link](https://www.figma.com/design/x42EaUZK7lkrMEEa8EeseC/HUDDL---Full-App)). I didn't use it as the prototype, because the working app follows the original design above.
 
 
 ## 3. Screenshots of the Running App
@@ -163,14 +151,14 @@ All 24 screenshots below come from the real SwiftUI app running on the iPhone 17
 
 The denominator is a list of **50 planned screens and functions**. It comes from the screen list in my Figma file, with the state variants of one screen merged into a single row (for example, “Sign in” covers sign in, its error state and its loading state). I added two cross-cutting functions that the design shows but that are not single screens: social sign-in and push notifications. File counts and lines of code were not used.
 
-- **Figma status:** Completed = the screen and its connections exist. Partially Implemented = the screen exists, but some of its state frames are not linked.
+- **Figma status:** Completed = the screen, its states and its prototype connections exist in the file.
 - **SwiftUI status:** Completed = the screen exists in the app's code and is reachable. Partially Implemented = part of it is placeholder or only visual.
 - **Functionality status:** Completed = the feature worked during an automated UI test or a recorded capture. Not Verified = it is implemented but has not been tested in the running app yet. Partially Implemented and Planned are as written.
 - **Scoring:** Completed = 1, Partially Implemented = 0.5, everything else = 0, divided by the number of rows.
 
 | Assessment | Result |
 |---|---|
-| Figma prototype completeness | 42 Completed, 8 Partially Implemented → **92%** (all 50 represented; 12 state links missing) |
+| Figma prototype completeness | 50 Completed of 50 → **100%** (all screens represented and connected) |
 | SwiftUI interface implementation | 47 Completed, 3 Partially Implemented → **97%** |
 | Functionality verified in the running app | 30 of 50 → **60%** |
 | Functionality implemented (verified + not yet verified + half of partial) | **96%** |
@@ -184,8 +172,8 @@ The midterm requires at least 50% of the planned interface and functionality. Co
 |---|---|---|---|---|---|
 | 1 | Splash screen | Completed | Completed | Completed | Seen on every launch |
 | 2 | Onboarding (3 pages) | Completed | Completed | Completed | UI test 01 |
-| 3 | Sign up with validation | Partially Implemented | Completed | Completed | UI tests 01, 02; error frame not linked in Figma |
-| 4 | Sign in by username | Partially Implemented | Completed | Completed | UI tests 03, 13; error frame not linked |
+| 3 | Sign up with validation | Completed | Completed | Completed | UI tests 01, 02 |
+| 4 | Sign in by username | Completed | Completed | Completed | UI tests 03, 13 |
 | 5 | Forgot password | Completed | Completed | Completed | UI test 03 (emulator email) |
 | 6 | Profile setup | Completed | Completed | Completed | UI test 02 (photo upload not tested) |
 | 7 | Welcome | Completed | Completed | Completed | UI test 02 |
@@ -196,15 +184,15 @@ The midterm requires at least 50% of the planned interface and functionality. Co
 | 12 | Full-screen photo viewer | Completed | Completed | Not Verified | No photos in demo data |
 | 13 | Search (games and players) | Completed | Completed | Completed | UI test 11 |
 | 14 | Notifications list | Completed | Completed | Completed | UI test 09 |
-| 15 | Discover swipe deck | Partially Implemented | Completed | Completed | UI test 05; passed/liked frames not linked |
-| 16 | Interested list (Active/Expired) | Partially Implemented | Completed | Completed | UI test 05; remove-confirm frame not linked |
-| 17 | Not interested list | Partially Implemented | Completed | Completed | UI test 05; remove-confirm frame not linked |
+| 15 | Discover swipe deck | Completed | Completed | Completed | UI test 05 |
+| 16 | Interested list (Active/Expired) | Completed | Completed | Completed | UI test 05 |
+| 17 | Not interested list | Completed | Completed | Completed | UI test 05 |
 | 18 | Sort sheet | Completed | Completed | Not Verified | Not tested |
 | 19 | Game details (default, joined, left) | Completed | Completed | Completed | UI test 06 |
 | 20 | Game details, ended (result and moments) | Completed | Completed | Completed | Captured for this report |
-| 21 | Apply sheet (team, solo/group, commitment) | Partially Implemented | Completed | Completed | UI test 05 (solo); group apply backend-only; unchecked/sending frames not linked |
+| 21 | Apply sheet (team, solo/group, commitment) | Completed | Completed | Completed | UI test 05 (solo); group apply backend-only |
 | 22 | Application sent | Completed | Completed | Completed | UI test 05 |
-| 23 | Host a game (sport, venue, date, format) | Partially Implemented | Completed | Completed | UI test 07; error frame not linked |
+| 23 | Host a game (sport, venue, date, format) | Completed | Completed | Completed | UI test 07 |
 | 24 | Game posted | Completed | Completed | Completed | UI test 07 |
 | 25 | My game (host view and manage menu) | Completed | Completed | Completed | UI test 07 |
 | 26 | Edit game | Completed | Completed | Not Verified | Opened in UI test 07; saving not tested |
@@ -214,7 +202,7 @@ The midterm requires at least 50% of the planned interface and functionality. Co
 | 30 | Post result | Completed | Completed | Not Verified | Not tested |
 | 31 | Result posted | Completed | Completed | Not Verified | Not tested |
 | 32 | Share moments (post-game compose) | Completed | Completed | Not Verified | Backend checks only |
-| 33 | Personal invite accepted (You're in) | Partially Implemented | Completed | Completed | UI test 09; confirm frames not linked |
+| 33 | Personal invite accepted (You're in) | Completed | Completed | Completed | UI test 09 |
 | 34 | Chat list | Completed | Completed | Completed | UI test 10 |
 | 35 | Team chat (read-only after a game ends) | Completed | Completed | Completed | UI test 09; read-only state captured |
 | 36 | Direct message | Completed | Completed | Completed | UI test 10 |
@@ -290,7 +278,7 @@ Testing changed how I think about “done.” Tapping through the simulator by h
 
 ### What I plan to complete for the final project
 
-I want to test everything that is still marked Not Verified, especially photo uploads, posting results and sharing moments. I also want to connect the 12 missing prototype links in Figma, and to deploy the full backend if I can get access to the Blaze plan. Writing more of the remaining work myself, with the assistant explaining instead of writing, is also a goal for the final.
+I want to test everything that is still marked Not Verified, especially photo uploads, posting results and sharing moments. I also want to deploy the full backend if I can get access to the Blaze plan. Writing more of the remaining work myself, with the assistant explaining instead of writing, is also a goal for the final.
 
 
 ## 7. Final Project Development Plan
@@ -299,7 +287,6 @@ I want to test everything that is still marked Not Verified, especially photo up
 ### High priority
 
 - Test the implemented but unverified flows in the running app: photo and video upload, Post result, Share moments, Edit and Cancel game, Invite player, Delete account, Log out.
-- Add the 12 missing prototype links in Figma so the prototype is fully connected.
 - Deploy Cloud Functions and Storage to `huddl-app-ph` once Blaze billing is available (for example, school credits), then run the tests against the cloud.
 
 
@@ -323,8 +310,8 @@ I want to test everything that is still marked Not Verified, especially photo up
 
 | Claim | Evidence |
 |---|---|
-| Figma prototype: 201 frames, 1,623 links (242 overlays, 277 back), 4 flows, 0 dead ends, 13 frames without incoming links | Read directly from the Figma file with the Plugin API (read-only), page SCREENS |
-| "HUDDL – Full App" file is a different, simplified design (63 frames) | Same audit on that file; you chose the original file for the submission |
+| Figma prototype: 220 frames, 1,644 screen links (292 overlays, 287 back), 305 component state changes, 4 flows, 0 dead ends, only the Splash start frame without an incoming link | Read directly from the Figma file with the Plugin API (read-only), page SCREENS. A first count (201 frames, 13 unlinked) missed 19 frames nested in groups and subsections and was corrected |
+| "HUDDL – Full App" file is a different, simplified design | Same audit on that file; you chose the original file for the submission |
 | 24 screenshots are from the real app | Captured by XCUITest runs on the iPhone 17 Pro simulator (iOS 26) against the emulators; stored in `assets/app/` |
 | 4 unit tests, 13 UI tests passing | Latest full test run (Xcode result bundle), "TEST SUCCEEDED" |
 | 33 backend checks passing | `npm --prefix firebase/functions test`, 33 passed / 0 failed |
@@ -336,14 +323,13 @@ I want to test everything that is still marked Not Verified, especially photo up
 
 ## Coverage numbers
 
-- Figma prototype completeness: **92%** (42 Completed + 8 Partially Implemented of 50; every planned screen represented, 12 state links missing)
+- Figma prototype completeness: **100%** (50 of 50 Completed; every planned screen represented and connected)
 - SwiftUI interface implementation: **97%** (47 Completed + 3 Partially Implemented of 50)
 - Functionality verified in the running app: **60%** (30 of 50)
 - Functionality implemented (verified + not yet verified + half of partial): **96%**
 
 ## Outstanding requirements
 
-- The Figma prototype isn't 100% connected yet: 12 state frames need incoming links (listed in section 2).
 - Course and instructor are placeholders on the cover page.
 - The reflection must be reviewed and personalized by the student before submission.
 - Figma frame images couldn't be exported automatically (Figma returned blank renders), so the PDF relies on the link.
