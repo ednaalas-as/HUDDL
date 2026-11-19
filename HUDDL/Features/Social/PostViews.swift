@@ -214,15 +214,20 @@ struct MediaGrid: View {
     }
     private func tile(_ m: MediaItem) -> some View {
         Button { onTap(m) } label: {
-            ZStack {
-                if m.type == "video" {
-                    Rectangle().fill(HColor.darkText.opacity(0.85))
-                    Image(systemName: "play.circle.fill").font(.system(size: 34)).foregroundStyle(.white)
-                } else {
-                    AsyncImage(url: URL(string: m.url)) { $0.resizable().scaledToFill() } placeholder: { HColor.avatarBG }
+            // The tile takes exactly the size it's given; the photo fills it and is cropped to it.
+            // (A scaled-to-fill image sized the tile by itself and spilled over neighbouring posts.)
+            Color.clear
+                .overlay {
+                    if m.type == "video" {
+                        Rectangle().fill(HColor.darkText.opacity(0.85))
+                        Image(systemName: "play.circle.fill").font(.system(size: 34)).foregroundStyle(.white)
+                    } else {
+                        AsyncImage(url: URL(string: m.url)) { $0.resizable().scaledToFill() } placeholder: { HColor.avatarBG }
+                    }
                 }
-            }
-            .frame(maxWidth: .infinity).clipShape(RoundedRectangle(cornerRadius: 14))
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .clipShape(RoundedRectangle(cornerRadius: 14))
+                .contentShape(RoundedRectangle(cornerRadius: 14))
             .overlay(alignment: .bottomLeading) {
                 if let d = m.duration { Text(Duration.seconds(d).formatted(.time(pattern: .minuteSecond))).font(HFont.inter(11, .semibold)).foregroundStyle(.white).padding(8) }
             }
@@ -396,15 +401,19 @@ struct PhotoViewer: View {
     @Environment(\.dismiss) private var dismiss
     @State private var scale: CGFloat = 1
     var body: some View {
-        ZStack(alignment: .topTrailing) {
+        ZStack {
             Color.black.ignoresSafeArea()
             if item.type == "video", let url = URL(string: item.url) {
                 VideoPlayer(player: AVPlayer(url: url)).ignoresSafeArea()
             } else {
+                // Centered in the screen; only the close button sits in the corner.
                 AsyncImage(url: URL(string: item.url)) { $0.resizable().scaledToFit() } placeholder: { ProgressView().tint(.white) }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .scaleEffect(scale)
                     .gesture(MagnificationGesture().onChanged { scale = max(1, $0) }.onEnded { _ in withAnimation { scale = 1 } })
             }
+        }
+        .overlay(alignment: .topTrailing) {
             Button { dismiss() } label: {
                 Image(systemName: "xmark").font(.system(size: 18, weight: .bold)).foregroundStyle(.white).frame(width: 44, height: 44)
                     .background(.white.opacity(0.15), in: Circle())

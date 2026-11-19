@@ -1,5 +1,6 @@
 import SwiftUI
 import FirebaseAuth
+import GoogleSignIn
 
 @main
 struct HUDDLApp: App {
@@ -33,6 +34,7 @@ struct HUDDLApp: App {
                 .modifier(ToastHost(center: toasts))
                 .modifier(DialogHost(center: dialogs))
                 .tint(HColor.brandNavy)
+                .onOpenURL { url in _ = GIDSignIn.sharedInstance.handle(url) }   // Google sign-in callback
         }
     }
 }

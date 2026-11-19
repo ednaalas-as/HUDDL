@@ -63,20 +63,33 @@ private struct OrDivider: View {
 
 /// "Continue with Facebook / Google" (Text / … Border components).
 private struct SocialButtons: View {
+    @Environment(SessionStore.self) private var session
     @Environment(ToastCenter.self) private var toasts
+    @State private var googleBusy = false
     var body: some View {
         VStack(spacing: 15) {
-            social("Continue with Facebook", symbol: "f.circle.fill", tint: Color(hex: 0x1877F2))
-            social("Continue with Google", symbol: "g.circle.fill", tint: Color(hex: 0xEA4335))
+            social("Continue with Facebook", symbol: "f.circle.fill", tint: Color(hex: 0x1877F2)) {
+                // Facebook needs a Facebook developer app, which HUDDL doesn't have yet.
+                toasts.info("Facebook sign-in isn't available yet. Use your username or Google for now.")
+            }
+            social("Continue with Google", symbol: "g.circle.fill", tint: Color(hex: 0xEA4335), busy: googleBusy) {
+                guard !googleBusy else { return }
+                googleBusy = true
+                Task {
+                    defer { googleBusy = false }
+                    do { try await session.signInWithGoogle() }
+                    catch is CancellationError { }   // closed Google's sheet: stay here quietly
+                    catch { toasts.error(AppError.message(error)) }
+                }
+            }
+            .accessibilityIdentifier("auth.google")
         }
     }
-    private func social(_ title: String, symbol: String, tint: Color) -> some View {
-        Button {
-            // Social sign-in needs provider app IDs from the real Firebase project (not available in the emulator setup).
-            toasts.info("\(title.replacingOccurrences(of: "Continue with ", with: "")) sign-in will be available once HUDDL's Firebase project is connected. Use your username for now.")
-        } label: {
+    private func social(_ title: String, symbol: String, tint: Color, busy: Bool = false, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
             HStack(spacing: 16) {
-                Image(systemName: symbol).font(.system(size: 20)).foregroundStyle(tint)
+                if busy { ProgressView().frame(width: 20, height: 20) }
+                else { Image(systemName: symbol).font(.system(size: 20)).foregroundStyle(tint) }
                 Text(title).font(HFont.inter(12, .semibold)).foregroundStyle(HColor.buttonText)
             }
             .frame(width: 230, height: 40)

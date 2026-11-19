@@ -110,9 +110,17 @@ final class HUDDLUITests: XCTestCase {
         XCTAssertTrue(text("Use at least 8 characters").exists)
         XCTAssertTrue(text("Passwords don't match").exists)
         snap("signup-validation")
-        // Social buttons respond honestly (provider config not available on the emulator).
+        // Facebook isn't built yet and says so.
+        button("Continue with Facebook").tap()
+        waitFor(textContaining("Facebook sign-in isn't available yet"))
+        // Google opens iOS's "wants to use google.com to sign in" prompt; cancelling leaves the user on Sign Up.
         button("Continue with Google").tap()
-        waitFor(textContaining("Google sign-in will be available"))
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        let cancel = springboard.buttons["Cancel"].firstMatch
+        XCTAssertTrue(cancel.waitForExistence(timeout: 15), "Google sign-in prompt didn't appear")
+        snap("google-signin-prompt")
+        cancel.tap()
+        waitFor(text("Fill in all fields to create your account"))
     }
 
     // MARK: 2. New account → profile setup → welcome → Discover

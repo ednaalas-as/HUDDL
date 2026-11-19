@@ -2,6 +2,8 @@ import Foundation
 import SwiftUI
 import FirebaseAuth
 import FirebaseFirestore
+import GoogleSignIn
+import UIKit
 
 /// Owns the authentication state and the signed-in user's profile document.
 @MainActor
@@ -69,29 +71,113 @@ final class SessionStore {
         } catch {
             throw AppError.validation(Self.authMessage(error))
         }
-        let uid = result.user.uid
-        let user = AppUser(id: nil, username: uname, displayName: uname,
-                           city: Geo.lucena.name, homeArea: nil, createdAt: Date())
         do {
-            try await db.runTransaction { tx, errorPointer in
-                let nameRef = self.db.collection("usernames").document(uname)
-                do {
-                    if try tx.getDocument(nameRef).exists {
-                        errorPointer?.pointee = NSError(domain: "HUDDL", code: 409,
-                                                        userInfo: [NSLocalizedDescriptionKey: "That username is taken. Try another one."])
-                        return nil
-                    }
-                } catch let e as NSError { errorPointer?.pointee = e; return nil }
-                tx.setData(["uid": uid], forDocument: nameRef)
-                do { try tx.setData(from: user, forDocument: self.db.collection("users").document(uid)) }
-                catch let e as NSError { errorPointer?.pointee = e; return nil }
-                return nil
-            }
+            try await createProfile(uid: result.user.uid, username: uname, displayName: uname)
         } catch {
             // Roll back the auth account so the user can retry with another username.
             try? await result.user.delete()
             throw AppError.validation(AppError.message(error))
         }
+    }
+
+    /// Reserves `usernames/{username}` and creates `users/{uid}` in one transaction (the rules require both together).
+    private func createProfile(uid: String, username uname: String, displayName: String) async throws {
+        let user = AppUser(id: nil, username: uname, displayName: displayName,
+                           city: Geo.lucena.name, homeArea: nil, createdAt: Date())
+        try await db.runTransaction { tx, errorPointer in
+            let nameRef = self.db.collection("usernames").document(uname)
+            do {
+                if try tx.getDocument(nameRef).exists {
+                    errorPointer?.pointee = NSError(domain: "HUDDL", code: 409,
+                                                    userInfo: [NSLocalizedDescriptionKey: "That username is taken. Try another one."])
+                    return nil
+                }
+            } catch let e as NSError { errorPointer?.pointee = e; return nil }
+            tx.setData(["uid": uid], forDocument: nameRef)
+            do { try tx.setData(from: user, forDocument: self.db.collection("users").document(uid)) }
+            catch let e as NSError { errorPointer?.pointee = e; return nil }
+            return nil
+        }
+    }
+
+    // MARK: Google sign-in (sign in and sign up in one step)
+
+    /// The OAuth client ID from Config/Google.local.xcconfig, or nil when this build has none.
+    static var googleClientID: String? {
+        guard let id = Bundle.main.object(forInfoDictionaryKey: "GIDClientID") as? String,
+              id.hasSuffix(".apps.googleusercontent.com") else { return nil }
+        return id
+    }
+
+    /// Signs in with Google. A Google account that's new to HUDDL gets a profile with a username made
+    /// from its name, then continues to profile setup like any new player. Throws `CancellationError`
+    /// when the user closes Google's sheet.
+    func signInWithGoogle() async throws {
+        guard let clientID = Self.googleClientID else {
+            throw AppError.validation("Google sign-in isn't set up on this build. Use your username for now.")
+        }
+        guard let presenter = Self.topViewController() else {
+            throw AppError.validation("Couldn't open Google sign-in. Try again.")
+        }
+        GIDSignIn.sharedInstance.configuration = GIDConfiguration(clientID: clientID)
+
+        let google: GIDSignInResult
+        do {
+            google = try await GIDSignIn.sharedInstance.signIn(withPresenting: presenter)
+        } catch let error as GIDSignInError where error.code == .canceled {
+            throw CancellationError()
+        } catch {
+            throw AppError.validation("Google sign-in didn't finish. Check your connection and try again.")
+        }
+        guard let idToken = google.user.idToken?.tokenString else {
+            throw AppError.validation("Google didn't return your account details. Try again.")
+        }
+        let credential = GoogleAuthProvider.credential(withIDToken: idToken,
+                                                       accessToken: google.user.accessToken.tokenString)
+        let result: AuthDataResult
+        do {
+            result = try await Auth.auth().signIn(with: credential)
+        } catch {
+            throw AppError.validation(Self.authMessage(error))
+        }
+
+        // Existing HUDDL player → done (the auth listener takes it from here).
+        let uid = result.user.uid
+        if try await db.collection("users").document(uid).getDocument().exists { return }
+
+        // New player → reserve a username based on their Google name, retrying with a number if taken.
+        let name = google.user.profile?.name ?? result.user.displayName ?? ""
+        let base = Self.usernameBase(name: name, email: result.user.email)
+        var lastError: Error?
+        for attempt in 0..<6 {
+            let candidate = attempt == 0 ? base : "\(base)\(Int.random(in: 10...9999))"
+            do {
+                try await createProfile(uid: uid, username: candidate,
+                                        displayName: name.isEmpty ? candidate : name)
+                return
+            } catch {
+                lastError = error
+            }
+        }
+        throw AppError.validation(AppError.message(lastError ?? AppError.server("Couldn't create your profile. Try again.")))
+    }
+
+    /// A username that fits the rules (`^[a-z0-9._-]{3,30}$`), from the Google name or email.
+    static func usernameBase(name: String, email: String?) -> String {
+        let clean: (String) -> String = { raw in
+            String(raw.lowercased().unicodeScalars.filter { CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyz0123456789").contains($0) })
+        }
+        var base = clean(name)
+        if base.count < 3, let local = email?.split(separator: "@").first { base = clean(String(local)) }
+        if base.count < 3 { base = "player" }
+        return String(base.prefix(20))
+    }
+
+    private static func topViewController() -> UIViewController? {
+        let scenes = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
+        var top = scenes.flatMap(\.windows).first(where: \.isKeyWindow)?.rootViewController
+        while let presented = top?.presentedViewController { top = presented }
+        return top
     }
 
     // MARK: Sign in (username or email)
@@ -170,6 +256,7 @@ final class SessionStore {
 
     func signOut() {
         PushService.shared.clearToken(for: uid)
+        GIDSignIn.sharedInstance.signOut()   // so the next Google sign-in can pick an account
         try? Auth.auth().signOut()
     }
 

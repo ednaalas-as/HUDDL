@@ -229,6 +229,101 @@ async function main() {
   await db.doc(`posts/moments-morning-rally/likes/${thessa.id}`).set({ uid: thessa.id, createdAt: hours(-19) });
   await db.doc(`posts/moments-morning-rally/comments/c1`).set({ author: thessa, text: "Rematch next week? 😄", createdAt: hours(-19) });
 
+  // ---- Presentation activity: Edna's own post, and the other 7 players interacting with it and the feed.
+  let ednaMedia: { url: string; type: string }[] = [];
+  if (!production) {
+    const bucketName = "demo-huddl.appspot.com";
+    const dest = `posts/${edna.id}/seed-edna-court.jpg`;
+    const token = randomBytes(16).toString("hex");
+    await getStorage().bucket(bucketName).upload(join(__dirname, "..", "seed-assets", "moment-court.jpg"), {
+      destination: dest, metadata: { contentType: "image/jpeg", metadata: { firebaseStorageDownloadTokens: token } },
+    });
+    ednaMedia = [{ url: `http://127.0.0.1:9199/v0/b/${bucketName}/o/${encodeURIComponent(dest)}?alt=media&token=${token}`, type: "photo" }];
+  }
+  const ednaPost = "edna-moments-morning-rally";
+  await db.doc(`posts/${ednaPost}`).set({
+    author: edna, type: "postGame", gameId: "morning-rally", gameTitle: "Morning Rally 2v2", venueName: "Quezon Convention Gym",
+    gameDate: hours(-26), gameSport: "volleyball", includeResult: false, media: ednaMedia,
+    caption: "First HUDDL game in the books! 🏐 Thank you Bea, Thessa and Desiree for showing up and making it count. Who's in for Beach Volley Sunday?",
+    tagged: [bea, thessa, desiree], actors: [], audience: "everyone", visibleTo: [],
+    likeCount: 0, commentCount: 0, repostCount: 2, createdAt: hours(-3),
+  });
+  // Likes from all seven other players (the like trigger keeps likeCount in sync).
+  const likers: [Ref, number][] = [[bea, -2.9], [thessa, -2.8], [desiree, -2.7], [roselle, -2.4], [kyle, -2.2], [jhon, -1.8], [althea, -1.5]];
+  for (const [p, h] of likers) await db.doc(`posts/${ednaPost}/likes/${p.id}`).set({ uid: p.id, createdAt: hours(h) });
+  // A short conversation (the comment trigger bumps commentCount and notifies Edna).
+  const thread: [Ref, string, number][] = [
+    [bea, "Best setter in Lucena 😤 Count me in for Sunday!", -2.85],
+    [thessa, "Good game! We'll get you next time 💪", -2.75],
+    [roselle, "Already applied to Beach Volley Sunday 🙋‍♀️", -2.3],
+    [edna, "See you all on Sunday! Bring water, it gets hot at Dalahican ☀️", -2.1],
+    [kyle, "Badminton crew might cross over to volleyball soon 👀", -1.9],
+    [althea, "Love this! Come try billiards with us at 8-Ball Night 🎱", -1.4],
+  ];
+  for (const [i, [p, text, h]] of thread.entries()) {
+    await db.doc(`posts/${ednaPost}/comments/c${i + 1}`).set({ author: p, text, createdAt: hours(h) });
+  }
+  for (const [p, h] of [[bea, -2.6], [roselle, -2.25]] as [Ref, number][]) {
+    await db.doc(`posts/${ednaPost}/reposts/${p.id}`).set({ createdAt: hours(h) });
+  }
+
+  // Activity on the rest of the feed so every post looks alive.
+  const likeAll = async (postId: string, people: Ref[]) => {
+    for (const p of people) await db.doc(`posts/${postId}/likes/${p.id}`).set({ uid: p.id, createdAt: hours(-4) });
+  };
+  const comment = (postId: string, id: string, p: Ref, text: string, h: number) =>
+    db.doc(`posts/${postId}/comments/${id}`).set({ author: p, text, createdAt: hours(h) });
+  await likeAll("result-morning-rally", [bea, thessa, desiree, roselle, kyle]);
+  await comment("result-morning-rally", "c1", desiree, "GG! That second set was close 😅", -22);
+  await comment("result-morning-rally", "c2", bea, "Team A forever 🙌", -21.5);
+  await likeAll("moments-morning-rally", [edna, desiree, althea]);
+  await comment("moments-morning-rally", "c2", edna, "Anytime partner! 🏐", -18.5);
+  await likeAll("hosting_sat-6v6-open", [edna, roselle, althea]);
+  await comment("hosting_sat-6v6-open", "c1", desiree, "Saving a spot for my friend, applying soon!", -5);
+  await likeAll("hosting_friday-doubles", [kyle, edna]);
+  await comment("hosting_friday-doubles", "c1", kyle, "Partner up again? 🏸", -5.5);
+  await likeAll("hosting_rapid-chess", [thessa, kyle]);
+  await comment("hosting_rapid-chess", "c1", thessa, "Bringing my clock ♟️", -4.5);
+  await likeAll("hosting_eight-ball-night", [desiree, jhon]);
+  await likeAll("hosting_beach-volley", [bea, roselle, thessa, kyle]);
+  await comment("hosting_beach-volley", "c1", thessa, "Is it beginner friendly?", -4.2);
+  await comment("hosting_beach-volley", "c2", edna, "Yes! All levels welcome 😊", -4);
+  await likeAll("hosting_badminton-clinic", [roselle]);
+
+  // Like notifications for Edna (likes have no trigger notification; comments do).
+  await db.doc(`notifications/${edna.id}/items/like_${ednaPost}`).set({
+    type: "like", title: "Bea Anne Balmes and 6 others liked your post", body: "First HUDDL game in the books! 🏐",
+    actor: bea, postId: ednaPost, read: false, resolved: false, createdAt: hours(-1.5),
+  });
+  await db.doc(`notifications/${edna.id}/items/repost_${ednaPost}`).set({
+    type: "like", title: "Roselle Jean De Leon and Bea Anne Balmes reposted your post", body: "First HUDDL game in the books! 🏐",
+    actor: roselle, postId: ednaPost, read: false, resolved: false, createdAt: hours(-2.25),
+  });
+  for (const t of [bea, thessa, desiree]) {
+    await db.doc(`notifications/${t.id}/items/tag_${ednaPost}`).set({
+      type: "comment", title: "Edna Alas-as tagged you", body: "In moments from Morning Rally 2v2",
+      actor: edna, gameId: "morning-rally", postId: ednaPost, read: false, resolved: false, createdAt: hours(-3),
+    });
+  }
+
+  // More conversations in Chat.
+  const dm = async (a: Ref, b: Ref, msgs: [Ref, string, number][]) => {
+    const id = `dm_${[a.id, b.id].sort().join("_")}`;
+    await db.doc(`chats/${id}`).set({ type: "direct", title: "", memberIds: [a.id, b.id], members: [a, b], readOnly: false, updatedAt: FieldValue.serverTimestamp(), unread: {} });
+    for (const [i, [s, text, h]] of msgs.entries()) {
+      await db.doc(`chats/${id}/messages/m${i + 1}`).set({ senderId: s.id, senderName: s.name, text, system: false, createdAt: hours(h) });
+    }
+  };
+  await dm(edna, roselle, [[roselle, "Hi Edna! I applied to Beach Volley Sunday 😊", -2], [roselle, "Can I bring my own ball?", -1.9]]);
+  await dm(edna, kyle, [[kyle, "Nice post! Do you play badminton too?", -1.8], [edna, "A little! Maybe I'll join your Smash Session 🏸", -1.7], [kyle, "Let's go! Apply anytime", -1.6]]);
+  const teamMsg = (gameId: string, id: string, s: Ref, text: string, h: number) =>
+    db.doc(`chats/game_${gameId}/messages/${id}`).set({ senderId: s.id, senderName: s.name, text, system: false, createdAt: hours(h) });
+  await teamMsg("morning-rally", "t1", bea, "See you at 7 AM! 🏐", -27);
+  await teamMsg("morning-rally", "t2", thessa, "On my way!", -26.3);
+  await teamMsg("morning-rally", "t3", edna, "GG everyone, thank you! 🙌", -24.5);
+  await teamMsg("beach-volley", "t1", edna, "Welcome Bea! Sunday 6 AM at Dalahican ☀️", -3.5);
+  await teamMsg("beach-volley", "t2", bea, "Can't wait! 🏐", -3.4);
+
   // Applications & invites to exercise host and player flows.
   await db.doc(`games/beach-volley/applications/${roselle.id}`).set({
     applicant: roselle, applicantId: roselle.id, teamId: "A", joinAs: "solo", groupMembers: [], note: "I can play the whole morning!",

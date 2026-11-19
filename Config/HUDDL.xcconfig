@@ -1,0 +1,7 @@
+// Build settings for the HUDDL app target.
+// Google Sign-In reads its client ID from Config/Google.local.xcconfig, which is git-ignored.
+// To create it, download GoogleService-Info.plist (Firebase console → Project settings → iOS app)
+// into firebase/ and run Config/make-google-config.sh. Without it, the Google button shows a message instead.
+GOOGLE_CLIENT_ID =
+GOOGLE_REVERSED_CLIENT_ID = com.huddl.app.google-signin-not-configured
+#include? "Google.local.xcconfig"

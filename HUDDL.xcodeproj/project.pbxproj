@@ -12,6 +12,7 @@
 		A10000000000000000000103 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000203 /* FirebaseStorage */; };
 		A10000000000000000000104 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000204 /* FirebaseMessaging */; };
 		A10000000000000000000105 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000205 /* FirebaseFunctions */; };
+		A10000000000000000000106 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000206 /* GoogleSignIn */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +36,8 @@
 		A10000000000000000000501 /* HUDDL.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HUDDL.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A10000000000000000000502 /* HUDDLTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HUDDLTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A10000000000000000000503 /* HUDDLUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HUDDLUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A10000000000000000000504 /* HUDDL.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = HUDDL.xcconfig; sourceTree = "<group>"; };
+		A10000000000000000000505 /* HUDDL-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "HUDDL-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -65,6 +68,7 @@
 				A10000000000000000000103 /* FirebaseStorage in Frameworks */,
 				A10000000000000000000104 /* FirebaseMessaging in Frameworks */,
 				A10000000000000000000105 /* FirebaseFunctions in Frameworks */,
+				A10000000000000000000106 /* GoogleSignIn in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -91,6 +95,7 @@
 				A10000000000000000000601 /* HUDDL */,
 				A10000000000000000000602 /* HUDDLTests */,
 				A10000000000000000000603 /* HUDDLUITests */,
+				A10000000000000000000803 /* Config */,
 				A10000000000000000000802 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -103,6 +108,15 @@
 				A10000000000000000000503 /* HUDDLUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000803 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000504 /* HUDDL.xcconfig */,
+				A10000000000000000000505 /* HUDDL-Info.plist */,
+			);
+			path = Config;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -130,6 +144,7 @@
 				A10000000000000000000203 /* FirebaseStorage */,
 				A10000000000000000000204 /* FirebaseMessaging */,
 				A10000000000000000000205 /* FirebaseFunctions */,
+				A10000000000000000000206 /* GoogleSignIn */,
 			);
 			productName = HUDDL;
 			productReference = A10000000000000000000501 /* HUDDL.app */;
@@ -211,6 +226,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				A10000000000000000000D01 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				A10000000000000000000D02 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = A10000000000000000000802 /* Products */;
@@ -337,7 +353,9 @@
 		};
 		A10000000000000000000E03 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A10000000000000000000504 /* HUDDL.xcconfig */;
 			buildSettings = {
+				INFOPLIST_FILE = "Config/HUDDL-Info.plist";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
@@ -367,7 +385,9 @@
 		};
 		A10000000000000000000E04 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A10000000000000000000504 /* HUDDL.xcconfig */;
 			buildSettings = {
+				INFOPLIST_FILE = "Config/HUDDL-Info.plist";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
@@ -511,6 +531,14 @@
 				minimumVersion = 12.19.3;
 			};
 		};
+		A10000000000000000000D02 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.1.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -538,6 +566,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A10000000000000000000D01 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFunctions;
+		};
+		A10000000000000000000206 /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A10000000000000000000D02 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

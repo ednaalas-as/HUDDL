@@ -12,3 +12,6 @@ firebase/*.log
 # Presenter-only credentials (never commit)
 docs/presentation/HUDDL_ACCOUNTS_PRIVATE.md
 *PRIVATE*.md
+
+# Google Sign-In client IDs (generated, never commit)
+Config/Google.local.xcconfig
